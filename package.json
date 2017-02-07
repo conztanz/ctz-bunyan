@@ -17,8 +17,8 @@
     "logstash"
   ],
   "dependencies": {
-    "bunyan": "^1.8.1",
-    "bunyan-logstash-tcp": "^0.3.4",
+    "bunyan": "^1.8.5",
+    "bunyan-logstash-tcp": "^0.3.5"
   },
   "devDependencies": {
     "jshint-path-reporter": "conztanz/jshint-path-reporter"

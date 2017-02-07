@@ -1,9 +1,9 @@
-'use script';
+"use strict";
 
 const bunyan = require("bunyan");
 const bunyanLogstash = require("bunyan-logstash-tcp");
 
-module.export = {
+module.exports = {
   createLogger: function(options) {
 
     let stdoutStream = function(options) {
@@ -41,20 +41,6 @@ module.export = {
         tags: tags,
         type: options.name
       });
-      stream.on("timeout", function() {
-        logger.info("timeout while connecting to logstash");
-      });
-      stream.on("error", function(error) {
-        logger.error({
-          stacktrace: error.stack
-        });
-      });
-      stream.on("connect", function() {
-        logger.info("logger connected to logstash");
-      });
-      stream.on("close", function() {
-        logger.info("logstash connection closed");
-      });
       return {
         type: "raw",
         level: level,
@@ -67,13 +53,35 @@ module.export = {
     if (options && options.rotatingFile) {
       streams.push(rotatingFileStream(options));
     }
+
+    let logstash = null;
     if (options && options.logstash) {
-      streams.push(logstashStream(options));
+      logstash = logstashStream(options)
+      streams.push(logstash);
     }
 
-    return bunyan.createLogger({
+    let logger = bunyan.createLogger({
       name: options.name,
       streams: streams
     });
+
+    if (logstash) {
+      logstash.stream.on("timeout", function() {
+        logger.info("timeout while connecting to logstash");
+      });
+      logstash.stream.on("error", function(error) {
+        logger.error({
+          stacktrace: error.stack
+        });
+      });
+      logstash.stream.on("connect", function() {
+        logger.info("logger connected to logstash");
+      });
+      logstash.stream.on("close", function() {
+        logger.info("logstash connection closed");
+      });
+    }
+
+    return logger;
   }
 };

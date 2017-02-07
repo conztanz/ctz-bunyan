@@ -59,28 +59,28 @@ module.exports = {
       streams.push(logstash);
     }
 
-    let logger = bunyan.createLogger({
+    let log = bunyan.createLogger({
       name: options.name,
       streams: streams
     });
 
     if (logstash) {
       logstash.stream.on("timeout", function() {
-        logger.info("timeout while connecting to logstash");
+        log.info("timeout while connecting to logstash");
       });
       logstash.stream.on("error", function(error) {
-        logger.error({
+        log.error({
           stacktrace: error.stack
         });
       });
       logstash.stream.on("connect", function() {
-        logger.info("logger connected to logstash");
+        log.info("logger connected to logstash");
       });
       logstash.stream.on("close", function() {
-        logger.info("logstash connection closed");
+        log.info("logstash connection closed");
       });
     }
 
-    return logger;
+    return log;
   }
 };

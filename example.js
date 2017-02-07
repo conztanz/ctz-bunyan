@@ -6,10 +6,10 @@ let log = bunyan.createLogger({
     level: "debug",
   },
   logstash: {
-    host: "localhost",
+    host: "elk-cz-test.conztanz.com",
     port: 5000,
     level: "info",
-    tags: null
+    tags: []
   }
 });
 

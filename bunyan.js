@@ -6,7 +6,7 @@ const bunyanLogstash = require("bunyan-logstash-tcp");
 module.exports = {
   createLogger: function(options) {
 
-    let stdoutStream = function(options) {
+    const stdoutStream = function(options) {
       let level = options && options.stdout && options.stdout.level ? options.stdout.level : "debug";
       return {
         name: 'stdout',
@@ -15,8 +15,8 @@ module.exports = {
       };
     };
 
-    let rotatingFileStream = function(options) {
-      let path = options.rotatingFile.path ? options.rotatingFile.path : "/var/logs/" + options.name;
+    const rotatingFileStream = function(options) {
+      let path = options.rotatingFile.path ? options.rotatingFile.path : "/var/logs/" + options.name + ".log";
       let period = options.rotatingFile.period ? options.rotatingFile.period : "1d";
       let count = options.rotatingFile.count ? options.rotatingFile.count : 7;
       let level = options.rotatingFile.level ? options.rotatingFile.level : "info";
@@ -29,7 +29,7 @@ module.exports = {
       };
     };
 
-    let logstashStream = function(options) {
+    const logstashStream = function(options) {
       let host = options.logstash.host ? options.logstash.host : "localhost";
       let port = options.logstash.port ? options.logstash.port : 5000;
       let tags = options.logstash.tags
@@ -53,7 +53,6 @@ module.exports = {
     if (options && options.rotatingFile) {
       streams.push(rotatingFileStream(options));
     }
-
     let logstash = null;
     if (options && options.logstash) {
       logstash = logstashStream(options)

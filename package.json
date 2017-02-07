@@ -1,0 +1,28 @@
+{
+  "name": "ctz-bunyan",
+  "version": "1.0.0",
+  "description": "extended bunyan logger",
+  "main": "bunyan.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conztanz/ctz-bunyan"
+  },
+  "bugs": {
+    "url": "https://github.com/conztanz/ctz-bunyan/issues"
+  },
+  "homepage": "https://github.com/conztanz/ctz-bunyan#readme",
+  "keywords": [
+    "logger",
+    "bunyan",
+    "logstash"
+  ],
+  "dependencies": {
+    "bunyan": "^1.8.1",
+    "bunyan-logstash-tcp": "^0.3.4",
+  },
+  "devDependencies": {
+    "jshint-path-reporter": "conztanz/jshint-path-reporter"
+  },
+  "author": "Guillaume Simonneau",
+  "license": "MIT"
+}

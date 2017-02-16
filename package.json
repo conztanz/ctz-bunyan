@@ -3,6 +3,9 @@
   "version": "1.0.4",
   "description": "extended bunyan logger",
   "main": "bunyan.js",
+  "scripts":{
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/conztanz/ctz-bunyan"
@@ -21,7 +24,9 @@
     "bunyan-logstash-tcp": "^0.3.5"
   },
   "devDependencies": {
-    "jshint-path-reporter": "conztanz/jshint-path-reporter"
+    "chai": "^3.5.0",
+    "jshint-path-reporter": "conztanz/jshint-path-reporter",
+    "mocha": "^3.2.0"
   },
   "author": "Guillaume Simonneau",
   "license": "MIT"

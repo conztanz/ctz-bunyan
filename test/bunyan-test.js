@@ -3,6 +3,17 @@ const chai = require("chai");
 const assert = chai.assert;
 const bunyan = require("../bunyan");
 
+function test(testCase) {
+  let match = false;
+  let log = bunyan.createLogger(testCase.in);
+  log.streams.forEach(function(logStream) {
+    if (!match && logStream.name == testCase.expected.name && logStream.level == testCase.expected.level && logStream.stream == testCase.expected.stream) {
+      match = true;
+    }
+  });
+  assert.equal(match, true);
+}
+
 describe("ctz-bunyan", function() {
   describe("std", function() {
     const testCases = [{ in: null,
@@ -24,17 +35,7 @@ describe("ctz-bunyan", function() {
         }
       }
     ]
-    testCases.forEach(function(testCase) {
-      let match = false;
-      let log = bunyan.createLogger(testCase.in);
-      log.streams.forEach(function(logStream) {
-        if (!match && logStream.name == testCase.expected.name && logStream.level == testCase.expected.level && logStream.stream == testCase.expected.stream) {
-          match = true;
-        }
-      });
-      assert.equal(match, true);
-    });
-
+    testCases.forEach(test);
   });
 
   describe("rotating-file", function() {

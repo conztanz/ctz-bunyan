@@ -1,5 +1,4 @@
 [![NPM Version](http://img.shields.io/npm/v/ctz-bunyan.svg?style=flat)](https://www.npmjs.org/package/ctz-bunyan)
-[![NPM Downloads](https://img.shields.io/npm/dm/ctz-bunyan.svg?style=flat)](https://www.npmjs.org/package/ctz-bunyan)
 
 # get started
 

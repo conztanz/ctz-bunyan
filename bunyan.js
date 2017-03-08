@@ -48,6 +48,8 @@ module.exports = {
       }
     };
 
+    options = options ? options : {};
+    options.name = options.name ? options.name : "default";
     let streams = [];
     streams.push(stdoutStream(options));
     if (options && options.rotatingFile) {

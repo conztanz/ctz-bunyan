@@ -24,6 +24,10 @@ let log = bunyan.createLogger({
     port: 5000,
     level: "info",
     tags: null
+  },
+  rollbar: {
+    token: "rollback access token",
+    rollbarOptions: {} // Options to pass to rollbar.init()
   }
 });
 

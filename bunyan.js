@@ -3,6 +3,7 @@
 const bunyan = require("bunyan");
 const bunyanLogstash = require("bunyan-logstash-tcp");
 const bunyanRollbar = require('bunyan-rollbar');
+bunyan.stdSerializers.err = bunyanRollbar.stdSerializers.err;
 
 module.exports = {
   createLogger: function(options) {

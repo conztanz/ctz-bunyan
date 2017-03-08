@@ -8,6 +8,9 @@ bunyan.stdSerializers.err = bunyanRollbar.stdSerializers.err;
 module.exports = {
   createLogger: function(options) {
 
+    options = options ? options : {};
+    options.name = options.name ? options.name : "default";
+
     let log = bunyan.createLogger({
       name: options.name,
       streams: []
@@ -102,7 +105,6 @@ module.exports = {
       log.logstash = logstashStream(options);
       log.streams.push(log.logstash);
     }
-
     if(options && options.rollbar) {
       try{
         log.rollbar = rollbarStream(options);

@@ -2,11 +2,17 @@
 
 const bunyan = require("bunyan");
 const bunyanLogstash = require("bunyan-logstash-tcp");
+const bunyanRollbar = require('bunyan-rollbar');
 
 module.exports = {
   createLogger: function(options) {
 
-    const stdoutStream = function(options) {
+    let log = bunyan.createLogger({
+      name: options.name,
+      streams: []
+    });
+
+    const stdoutStream = options => {
       let level = options && options.stdout && options.stdout.level ? options.stdout.level : "debug";
       return {
         name: 'stdout',
@@ -15,7 +21,7 @@ module.exports = {
       };
     };
 
-    const rotatingFileStream = function(options) {
+    const rotatingFileStream = options => {
       let path = options.rotatingFile.path ? options.rotatingFile.path : "/var/logs/" + options.name + ".log";
       let period = options.rotatingFile.period ? options.rotatingFile.period : "1d";
       let count = options.rotatingFile.count ? options.rotatingFile.count : 7;
@@ -29,10 +35,29 @@ module.exports = {
       };
     };
 
-    const logstashStream = function(options) {
+    const handleConFailures = stream => {
+      if (stream) {
+        stream.on("timeout", () => {
+          log.info(`timeout while connecting to {stream.name}`);
+        });
+        stream.on("error", error => {
+          log.error({
+            stacktrace: error.stack
+          });
+        });
+        stream.on("connect", () => {
+          log.info(`logger connected to {stream.name}`);
+        });
+        stream.on("close", () => {
+          log.info(`{stream.name} connection closed`);
+        });
+      }
+    };
+
+    const logstashStream = options => {
       let host = options.logstash.host ? options.logstash.host : "localhost";
       let port = options.logstash.port ? options.logstash.port : 5000;
-      let tags = options.logstash.tags
+      let tags = options.logstash.tags;
       let level = options.logstash.level ? options.logstash.level : "info";
       let stream = bunyanLogstash.createStream({
         application: options.name,
@@ -41,44 +66,49 @@ module.exports = {
         tags: tags,
         type: options.name
       });
+      stream.name = "logstash";
+      handleConFailures(stream);
       return {
         type: "raw",
         level: level,
         stream: stream
-      }
+      };
     };
 
-    let streams = [];
-    streams.push(stdoutStream(options));
+    const rollbarStream = options => {
+      if(!options.rollbar.token){
+        throw new Error("wrong or missing rollbard access token");
+      }
+      let rollbarOptions = options.rollbar.rollbarOptions? options.rollbar.rollbarOptions: {}; // Additional options to pass to rollbar.init()
+      let stream = new bunyanRollbar.Stream({
+        rollbarToken: options.rollbar.token,
+        rollbarOptions: rollbarOptions
+      });
+      stream.name = "rollbar";
+      handleConFailures(stream);
+      return {
+        type: "raw",
+        level: "warn",
+        stream: stream
+    };
+  };
+
+    log.streams.push(stdoutStream(options));
     if (options && options.rotatingFile) {
-      streams.push(rotatingFileStream(options));
+      log.streams.push(rotatingFileStream(options));
     }
-    let logstash = null;
     if (options && options.logstash) {
-      logstash = logstashStream(options)
-      streams.push(logstash);
+      log.logstash = logstashStream(options);
+      log.streams.push(log.logstash);
     }
 
-    let log = bunyan.createLogger({
-      name: options.name,
-      streams: streams
-    });
-
-    if (logstash) {
-      logstash.stream.on("timeout", function() {
-        log.info("timeout while connecting to logstash");
-      });
-      logstash.stream.on("error", function(error) {
-        log.error({
-          stacktrace: error.stack
-        });
-      });
-      logstash.stream.on("connect", function() {
-        log.info("logger connected to logstash");
-      });
-      logstash.stream.on("close", function() {
-        log.info("logstash connection closed");
-      });
+    if(options && options.rollbar) {
+      try{
+        log.rollbar = rollbarStream(options);
+        log.streams.push(log.rollbar);
+      }catch(err){
+        log.warn(err);
+      }
     }
 
     return log;

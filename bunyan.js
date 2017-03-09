@@ -97,18 +97,18 @@ module.exports = {
     };
   };
 
-    log.streams.push(stdoutStream(options));
+    log.addStream(stdoutStream(options));
     if (options && options.rotatingFile) {
-      log.streams.push(rotatingFileStream(options));
+      log.addStream(rotatingFileStream(options));
     }
     if (options && options.logstash) {
       log.logstash = logstashStream(options);
-      log.streams.push(log.logstash);
+      log.addStream(log.logstash);
     }
     if(options && options.rollbar) {
       try{
         log.rollbar = rollbarStream(options);
-        log.streams.push(log.rollbar);
+        log.addStream(log.rollbar);
       }catch(err){
         log.warn(err);
       }

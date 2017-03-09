@@ -3,7 +3,7 @@
 # get started
 
 ## Instanciate a logger
-* We are using default values in the following:
+* We are using default values in the example below:
 
 ```
 const bunyan = require("ctz-bunyan");
@@ -34,7 +34,7 @@ let log = bunyan.createLogger({
 log.info('hi');
 log.warn({lang: 'fr'}, 'au revoir');
 ```
-* In the example below, bunyan will only have stdout stream:
+* Bunyan will have stdout stream only in the example below:
 
 ```
 const bunyan = require("ctz-bunyan");

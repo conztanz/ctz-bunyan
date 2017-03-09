@@ -34,7 +34,7 @@ let log = bunyan.createLogger({
 log.info('hi');
 log.warn({lang: 'fr'}, 'au revoir');
 ```
-* As default values were used in the previous example, the following is equivalent:
+* In the example below, bunyan will only have stdout stream:
 
 ```
 const bunyan = require("ctz-bunyan");

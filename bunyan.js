@@ -42,7 +42,7 @@ module.exports = {
     const handleConFailures = stream => {
       if (stream) {
         stream.on("timeout", () => {
-          log.info(`timeout while connecting to {stream.name}`);
+          log.info(`timeout while connecting to ${stream.name}`);
         });
         stream.on("error", error => {
           log.error({
@@ -50,10 +50,10 @@ module.exports = {
           });
         });
         stream.on("connect", () => {
-          log.info(`logger connected to {stream.name}`);
+          log.info(`logger connected to ${stream.name}`);
         });
         stream.on("close", () => {
-          log.info(`{stream.name} connection closed`);
+          log.info(`${stream.name} connection closed`);
         });
       }
     };

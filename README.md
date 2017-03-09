@@ -1,10 +1,9 @@
 [![NPM Version](http://img.shields.io/npm/v/ctz-bunyan.svg?style=flat)](https://www.npmjs.org/package/ctz-bunyan)
-[![NPM Downloads](https://img.shields.io/npm/dm/ctz-bunyan.svg?style=flat)](https://www.npmjs.org/package/ctz-bunyan)
 
 # get started
 
 ## Instanciate a logger
-* We are using default values in the following:
+* We are using default values in the example below:
 
 ```
 const bunyan = require("ctz-bunyan");
@@ -25,13 +24,17 @@ let log = bunyan.createLogger({
     port: 5000,
     level: "info",
     tags: null
+  },
+  rollbar: {
+    token: "rollback access token",
+    rollbarOptions: {} // Options to pass to rollbar.init()
   }
 });
 
 log.info('hi');
 log.warn({lang: 'fr'}, 'au revoir');
 ```
-* As default values were used in the previous example, the following is equivalent:
+* Bunyan will have stdout stream only in the example below:
 
 ```
 const bunyan = require("ctz-bunyan");

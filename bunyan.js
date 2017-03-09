@@ -97,9 +97,11 @@ module.exports = {
     };
   };
 
-    log.addStream(stdoutStream(options));
+    log.stdout = stdoutStream(options);
+    log.addStream(log.stdout);
     if (options && options.rotatingFile) {
-      log.addStream(rotatingFileStream(options));
+      log.rotatingFile = rotatingFileStream(options);
+      log.addStream(log.rotatingFile);
     }
     if (options && options.logstash) {
       log.logstash = logstashStream(options);

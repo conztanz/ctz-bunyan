@@ -94,8 +94,8 @@ module.exports = {
         type: "raw",
         level: "warn",
         stream: stream
+      };
     };
-  };
 
     log.stdout = stdoutStream(options);
     log.addStream(log.stdout);

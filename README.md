@@ -5,7 +5,7 @@
 ## Instanciate a logger
 * We are using default values in the example below:
 
-```
+```javascript
 const bunyan = require("ctz-bunyan");
 
 let log = bunyan.createLogger({
@@ -36,7 +36,7 @@ log.warn({lang: 'fr'}, 'au revoir');
 ```
 * Bunyan will have stdout stream only in the example below:
 
-```
+```javascript
 const bunyan = require("ctz-bunyan");
 
 let log = bunyan.createLogger({
@@ -51,7 +51,7 @@ log.warn({lang: 'fr'}, 'au revoir');
 
 Bunyan has a concept of a child logger to specialize a logger for a sub-component of your application, i.e. to create a new logger with additional bound fields that will be included in its log records. A child logger is created with `log.child(...)`.
 
-```
+```javascript
 const bunyan = require("ctz-bunyan");
 
 let log = bunyan.createLogger({

@@ -1,9 +1,9 @@
 {
   "name": "ctz-bunyan",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "extended bunyan logger",
   "main": "bunyan.js",
-  "scripts":{
+  "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "ctz-bunyan",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "extended bunyan logger",
   "main": "bunyan.js",
   "scripts": {
@@ -20,8 +20,8 @@
     "logstash"
   ],
   "dependencies": {
-    "bunyan": "^1.8.5",
-    "bunyan-logstash-tcp": "^0.3.5",
+    "bunyan": "1.8.12",
+    "bunyan-logstash-tcp": "1.0.0",
     "bunyan-rollbar": "^0.1.0"
   },
   "devDependencies": {
